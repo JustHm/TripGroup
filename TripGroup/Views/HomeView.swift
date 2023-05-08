@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button("Sign Out", action: {})
+            .task {
+                authViewModel.signOut()
+            }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(AuthViewModel())
     }
 }

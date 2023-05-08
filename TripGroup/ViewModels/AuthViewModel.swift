@@ -12,6 +12,7 @@ import GoogleSignInSwift
 import AuthenticationServices
 import CryptoKit
 
+@MainActor
 final class AuthViewModel: NSObject, ObservableObject {
     @Published var signState: SignState = .none
     @Published var isAuthHasError: Bool = false
@@ -33,7 +34,6 @@ final class AuthViewModel: NSObject, ObservableObject {
         }
     }
     
-    @MainActor
     func googleSignIn() async {
         //Firebase client 연결 설정
         guard let clientID = FirebaseApp.app()?.options.clientID else { return}
@@ -57,7 +57,6 @@ final class AuthViewModel: NSObject, ObservableObject {
         }
     }
     
-    @MainActor
     @available(iOS 13, *)
     func appleSignIn() {
         let nonce = randomNonceString()

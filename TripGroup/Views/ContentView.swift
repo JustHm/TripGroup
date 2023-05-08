@@ -16,6 +16,7 @@ struct ContentView: View {
                 HomeView()
             case .signOut, .none:
                 SignInView()
+                    .background(Color.tripBackground)
             }
         }
     }
