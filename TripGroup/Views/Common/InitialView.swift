@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct InitialView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
-        ContentView()
-            .environmentObject(AuthViewModel())
+        NavigationView {
+            switch authViewModel.signState {
+            case .signIn:
+                ContentView()
+            case .signOut, .none:
+                SignInView()
+                    .background(Color.tripBackground)
+            }
+        }
     }
 }
 

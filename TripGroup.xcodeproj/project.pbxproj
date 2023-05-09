@@ -13,7 +13,6 @@
 		223727792A0A778000DF5ED7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727782A0A778000DF5ED7 /* SettingsView.swift */; };
 		2237277C2A0A796500DF5ED7 /* TraillingIconLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237277B2A0A796500DF5ED7 /* TraillingIconLabelStyle.swift */; };
 		223727802A0A80F200DF5ED7 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237277F2A0A80F200DF5ED7 /* TabBarView.swift */; };
-		223727822A0A84B000DF5ED7 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727812A0A84B000DF5ED7 /* MainView.swift */; };
 		223727842A0A884500DF5ED7 /* TripTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727832A0A884500DF5ED7 /* TripTabBar.swift */; };
 		223727862A0A899500DF5ED7 /* TripCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727852A0A899500DF5ED7 /* TripCalendarView.swift */; };
 		223727882A0A899A00DF5ED7 /* TripMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727872A0A899A00DF5ED7 /* TripMapView.swift */; };
@@ -47,7 +46,6 @@
 		223727782A0A778000DF5ED7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2237277B2A0A796500DF5ED7 /* TraillingIconLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraillingIconLabelStyle.swift; sourceTree = "<group>"; };
 		2237277F2A0A80F200DF5ED7 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
-		223727812A0A84B000DF5ED7 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		223727832A0A884500DF5ED7 /* TripTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripTabBar.swift; sourceTree = "<group>"; };
 		223727852A0A899500DF5ED7 /* TripCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCalendarView.swift; sourceTree = "<group>"; };
 		223727872A0A899A00DF5ED7 /* TripMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripMapView.swift; sourceTree = "<group>"; };
@@ -91,6 +89,7 @@
 		223727702A0A69CC00DF5ED7 /* Utills */ = {
 			isa = PBXGroup;
 			children = (
+				2237277A2A0A795200DF5ED7 /* Components */,
 				2237276A2A09536600DF5ED7 /* Color+.swift */,
 				223727722A0A6A9100DF5ED7 /* Image+.swift */,
 				223727742A0A6A9E00DF5ED7 /* ImageCacheManager.swift */,
@@ -104,7 +103,6 @@
 				22DC1C552A091FB100CAD338 /* TripGroupApp.swift */,
 				22DC1C572A091FB100CAD338 /* ContentView.swift */,
 				22DC1C792A09250000CAD338 /* InitialView.swift */,
-				223727812A0A84B000DF5ED7 /* MainView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -186,7 +184,6 @@
 		22DC1C542A091FB100CAD338 /* TripGroup */ = {
 			isa = PBXGroup;
 			children = (
-				2237277A2A0A795200DF5ED7 /* Components */,
 				22DC1C7B2A09266500CAD338 /* TripGroup.entitlements */,
 				223727702A0A69CC00DF5ED7 /* Utills */,
 				22DC1C882A09380A00CAD338 /* Models */,
@@ -342,7 +339,6 @@
 				22DC1C7D2A09288100CAD338 /* AuthViewModel.swift in Sources */,
 				22DC1C7A2A09250000CAD338 /* InitialView.swift in Sources */,
 				22DC1C582A091FB100CAD338 /* ContentView.swift in Sources */,
-				223727822A0A84B000DF5ED7 /* MainView.swift in Sources */,
 				223727752A0A6A9E00DF5ED7 /* ImageCacheManager.swift in Sources */,
 				22DC1C562A091FB100CAD338 /* TripGroupApp.swift in Sources */,
 				223727882A0A899A00DF5ED7 /* TripMapView.swift in Sources */,
