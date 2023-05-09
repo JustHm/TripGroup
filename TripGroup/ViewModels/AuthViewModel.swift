@@ -16,7 +16,7 @@ import CryptoKit
 final class AuthViewModel: NSObject, ObservableObject {
     @Published var signState: SignState = .none
     @Published var isAuthHasError: Bool = false
-    private var currentUser: User?
+    @Published var userInfo: TripUser?
     var currentError: Error?
     // Unhashed nonce.
     fileprivate var currentNonce: String?
@@ -29,7 +29,10 @@ final class AuthViewModel: NSObject, ObservableObject {
     override init() {
         super.init()
         if let user = Auth.auth().currentUser {
-            currentUser = user
+            userInfo = TripUser(id: user.uid,
+                                name: user.displayName ?? "User-\(user.uid)",
+                                email: user.email ?? "NONE",
+                                avatar_url: user.photoURL)
             signState = .signIn
         }
     }

@@ -13,7 +13,7 @@ struct ContentView: View {
         NavigationView {
             switch authViewModel.signState {
             case .signIn:
-                HomeView()
+                MainView()
             case .signOut, .none:
                 SignInView()
                     .background(Color.tripBackground)
@@ -25,5 +25,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .environmentObject(AuthViewModel())
     }
 }
