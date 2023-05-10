@@ -16,6 +16,10 @@
 		223727842A0A884500DF5ED7 /* TripTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727832A0A884500DF5ED7 /* TripTabBar.swift */; };
 		223727862A0A899500DF5ED7 /* TripCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727852A0A899500DF5ED7 /* TripCalendarView.swift */; };
 		223727882A0A899A00DF5ED7 /* TripMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727872A0A899A00DF5ED7 /* TripMapView.swift */; };
+		223727912A0B93A000DF5ED7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 223727902A0B93A000DF5ED7 /* Lottie */; };
+		223727952A0B945300DF5ED7 /* car-ignite-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 223727942A0B945300DF5ED7 /* car-ignite-animation.json */; };
+		223727972A0B95FF00DF5ED7 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727962A0B95FF00DF5ED7 /* LottieView.swift */; };
+		223727992A0BBB9000DF5ED7 /* TripGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727982A0BBB9000DF5ED7 /* TripGroupView.swift */; };
 		2248697A2A0944E10092FDEC /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224869792A0944E10092FDEC /* SignInView.swift */; };
 		2248697C2A0944E50092FDEC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248697B2A0944E50092FDEC /* HomeView.swift */; };
 		2248697E2A0946FA0092FDEC /* StorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248697D2A0946FA0092FDEC /* StorageViewModel.swift */; };
@@ -49,6 +53,9 @@
 		223727832A0A884500DF5ED7 /* TripTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripTabBar.swift; sourceTree = "<group>"; };
 		223727852A0A899500DF5ED7 /* TripCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCalendarView.swift; sourceTree = "<group>"; };
 		223727872A0A899A00DF5ED7 /* TripMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripMapView.swift; sourceTree = "<group>"; };
+		223727942A0B945300DF5ED7 /* car-ignite-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "car-ignite-animation.json"; path = "TripGroup/car-ignite-animation.json"; sourceTree = SOURCE_ROOT; };
+		223727962A0B95FF00DF5ED7 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		223727982A0BBB9000DF5ED7 /* TripGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripGroupView.swift; sourceTree = "<group>"; };
 		224869792A0944E10092FDEC /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		2248697B2A0944E50092FDEC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		2248697D2A0946FA0092FDEC /* StorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewModel.swift; sourceTree = "<group>"; };
@@ -76,6 +83,7 @@
 				22DC1C802A092CE900CAD338 /* GoogleSignIn in Frameworks */,
 				22DC1C6B2A0921E800CAD338 /* FirebaseMessaging in Frameworks */,
 				22DC1C652A0921E800CAD338 /* FirebaseAuth in Frameworks */,
+				223727912A0B93A000DF5ED7 /* Lottie in Frameworks */,
 				22DC1C672A0921E800CAD338 /* FirebaseFirestore in Frameworks */,
 				22DC1C762A0923FB00CAD338 /* FirebaseAnalyticsSwift in Frameworks */,
 				22DC1C6D2A0921E800CAD338 /* FirebaseStorage in Frameworks */,
@@ -101,8 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				22DC1C552A091FB100CAD338 /* TripGroupApp.swift */,
-				22DC1C572A091FB100CAD338 /* ContentView.swift */,
 				22DC1C792A09250000CAD338 /* InitialView.swift */,
+				22DC1C572A091FB100CAD338 /* ContentView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -143,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				2248697B2A0944E50092FDEC /* HomeView.swift */,
+				223727982A0BBB9000DF5ED7 /* TripGroupView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -160,8 +169,17 @@
 			children = (
 				2237277F2A0A80F200DF5ED7 /* TabBarView.swift */,
 				223727832A0A884500DF5ED7 /* TripTabBar.swift */,
+				223727962A0B95FF00DF5ED7 /* LottieView.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		223727932A0B944200DF5ED7 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				223727942A0B945300DF5ED7 /* car-ignite-animation.json */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		22DC1C492A091FB100CAD338 = {
@@ -184,6 +202,7 @@
 		22DC1C542A091FB100CAD338 /* TripGroup */ = {
 			isa = PBXGroup;
 			children = (
+				223727932A0B944200DF5ED7 /* Resource */,
 				22DC1C7B2A09266500CAD338 /* TripGroup.entitlements */,
 				223727702A0A69CC00DF5ED7 /* Utills */,
 				22DC1C882A09380A00CAD338 /* Models */,
@@ -270,6 +289,7 @@
 				22DC1C752A0923FB00CAD338 /* FirebaseAnalyticsSwift */,
 				22DC1C7F2A092CE900CAD338 /* GoogleSignIn */,
 				22DC1C812A092CE900CAD338 /* GoogleSignInSwift */,
+				223727902A0B93A000DF5ED7 /* Lottie */,
 			);
 			productName = TripGroup;
 			productReference = 22DC1C522A091FB100CAD338 /* TripGroup.app */;
@@ -302,6 +322,7 @@
 			packageReferences = (
 				22DC1C632A0921E800CAD338 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				22DC1C7E2A092CE900CAD338 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				2237278F2A0B93A000DF5ED7 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 22DC1C532A091FB100CAD338 /* Products */;
 			projectDirPath = "";
@@ -318,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22DC1C5D2A091FB200CAD338 /* Preview Assets.xcassets in Resources */,
+				223727952A0B945300DF5ED7 /* car-ignite-animation.json in Resources */,
 				22DC1C5A2A091FB200CAD338 /* Assets.xcassets in Resources */,
 				22DC1C712A0923C200CAD338 /* GoogleService-Info.plist in Resources */,
 			);
@@ -337,6 +359,7 @@
 				224869802A09470C0092FDEC /* TripArticle.swift in Sources */,
 				2248697E2A0946FA0092FDEC /* StorageViewModel.swift in Sources */,
 				22DC1C7D2A09288100CAD338 /* AuthViewModel.swift in Sources */,
+				223727972A0B95FF00DF5ED7 /* LottieView.swift in Sources */,
 				22DC1C7A2A09250000CAD338 /* InitialView.swift in Sources */,
 				22DC1C582A091FB100CAD338 /* ContentView.swift in Sources */,
 				223727752A0A6A9E00DF5ED7 /* ImageCacheManager.swift in Sources */,
@@ -346,6 +369,7 @@
 				223727862A0A899500DF5ED7 /* TripCalendarView.swift in Sources */,
 				223727732A0A6A9100DF5ED7 /* Image+.swift in Sources */,
 				223727842A0A884500DF5ED7 /* TripTabBar.swift in Sources */,
+				223727992A0BBB9000DF5ED7 /* TripGroupView.swift in Sources */,
 				223727802A0A80F200DF5ED7 /* TabBarView.swift in Sources */,
 				223727792A0A778000DF5ED7 /* SettingsView.swift in Sources */,
 			);
@@ -554,6 +578,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2237278F2A0B93A000DF5ED7 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		22DC1C632A0921E800CAD338 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -573,6 +605,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		223727902A0B93A000DF5ED7 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2237278F2A0B93A000DF5ED7 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		22DC1C642A0921E800CAD338 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 22DC1C632A0921E800CAD338 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

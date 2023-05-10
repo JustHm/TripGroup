@@ -26,8 +26,7 @@ final class AuthViewModel: NSObject, ObservableObject {
         case none
     }
     
-    override init() {
-        super.init()
+    func restoreSignIn() {
         if let user = Auth.auth().currentUser {
             userInfo = TripUser(id: user.uid,
                                 name: user.displayName ?? "User-\(user.uid)",
@@ -79,8 +78,6 @@ final class AuthViewModel: NSObject, ObservableObject {
         do {
             try Auth.auth().signOut()
             signState = .signOut
-            UserDefaults.standard.set(false, forKey: "isLoggedIn")
-            UserDefaults.standard.set("", forKey: "uid")
         } catch {
             currentError = error
             isAuthHasError.toggle()

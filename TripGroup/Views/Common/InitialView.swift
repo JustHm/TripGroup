@@ -10,7 +10,7 @@ import SwiftUI
 struct InitialView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     var body: some View {
-        NavigationView {
+        VStack {
             switch authViewModel.signState {
             case .signIn:
                 ContentView()
@@ -19,11 +19,14 @@ struct InitialView: View {
                     .background(Color.tripBackground)
             }
         }
+        .onAppear {
+            authViewModel.restoreSignIn()
+        }
     }
 }
 
 struct InitialView_Previews: PreviewProvider {
     static var previews: some View {
-        InitialView()
+        InitialView().environmentObject(AuthViewModel())
     }
 }

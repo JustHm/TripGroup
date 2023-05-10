@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var isLogout: Bool = false
+    @State private var isDeleteAccount: Bool = false
     var body: some View {
         List {
             Section {
@@ -45,15 +47,33 @@ struct SettingsView: View {
                     .foregroundColor(.primary)
             }
             Section {
-                Label("LogOut", systemImage: "door.left.hand.open")
-                    .task { authViewModel.signOut() }
-                    .foregroundColor(.primary)
-                Label("Delete Account", systemImage: "x.square")
-                    .task { authViewModel.deleteAccount() }
-                    .foregroundColor(.red)
+                Button(action: {isLogout.toggle()}, label: {
+                    Label("LogOut", systemImage: "door.left.hand.open")
+                        .foregroundColor(.primary)
+                })
+                Button(action: {isDeleteAccount.toggle()} , label: {
+                    Label("Delete Account", systemImage: "x.square")
+                        .foregroundColor(.red)
+                })
+                    
             }
         }
         .listStyle(.insetGrouped)
+        .alert("LogOut", isPresented: $isLogout) {
+            Button("Logout", role: .destructive) {
+                authViewModel.signOut()
+            }
+        } message: {
+            Text("Are You Sure?")
+        }
+        .alert("Delete Account", isPresented: $isDeleteAccount) {
+            Button("Logout", role: .destructive) {
+                authViewModel.deleteAccount()
+            }
+        } message: {
+            Text("Are You Sure?")
+        }
+
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct SignInView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
@@ -16,10 +17,11 @@ struct SignInView: View {
                 .font(.largeTitle)
                 .bold()
                 .foregroundColor(.white)
-            Image("road-trip-travel")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(.bottom, 64.0)
+//            Image("road-trip-travel")
+            LottieView(name: "car-ignite-animation", mode: .loop)
+//                .resizable()
+//                .aspectRatio(contentMode: .fit)
+//                .padding(.bottom, 64.0)
             
             Button {
                 Task { await authViewModel.googleSignIn() }

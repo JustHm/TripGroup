@@ -16,24 +16,32 @@ struct ContentView: View {
         ]
     @State var selectedIndex = 0
     var body: some View {
-        VStack {
-            switch selectedIndex {
-            case 0:
+        NavigationView {
+            TabView {
                 HomeView()
-            case 1:
-                Text("Calendar")
-            case 2:
-                Text("Map")
-            default:
+                    .tabItem {
+                        Label("Home", systemImage: "house")
+                    }
+                    .tag(0)
+                TripCalendarView()
+                    .tabItem {
+                        Label("Calendar", systemImage: "calendar")
+                    }.tag(1)
+                TripMapView()
+                    .tabItem {
+                        Label("Map", systemImage: "map")
+                    }.tag(2)
                 SettingsView()
-                    .environmentObject(AuthViewModel())
+                    .tabItem {
+                        Label("Settings", systemImage: "gear")
+                    }.tag(3)
             }
-            
-            Spacer()
-            TripTabBar(tabItems: tabItems, selectedIndex: $selectedIndex)
-                .ignoresSafeArea(edges: .bottom)
-
+            .tint(.white)
+            .onAppear {
+                UITabBar.appearance().backgroundColor = UIColor(.tripBackground)
+            }
         }
+        
     }
 }
 
