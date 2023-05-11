@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct TripArticle {
-    let write: TripUser
-    let images: [UIImage]
+    let writer: TripUser
     let description: String
+    let images: [String]
     let member: [String]
     let date: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case writer, description, images, member, date
+        
+    }
 }

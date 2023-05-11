@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var firebase: FirebaseViewModel
     let group = ["Group1", "Group2", "Group3"]
     @State var currentGroup: String = ""
     var body: some View {
@@ -17,20 +18,11 @@ struct HomeView: View {
                     Text("Title")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                    HStack {
-                        Menu("MyGroup \(currentGroup)") {
-                            ForEach(group.indices) { index in
-                                Button(group[index]) {
-                                    currentGroup = group[index]
-                                }
-                            }
-                        }
-                    }
-                    
                 }
-                
                 Spacer()
-                Button {print("Add Group")} label: {
+                Button {
+                    firebase.addGroup(groupName: "Group1")
+                } label: {
                     Label("Add Group", systemImage: "plus.circle")
                         .labelStyle(.trailingIcon)
                         .tint(.tripBackground)
@@ -45,5 +37,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+            .environmentObject(FirebaseViewModel())
     }
 }

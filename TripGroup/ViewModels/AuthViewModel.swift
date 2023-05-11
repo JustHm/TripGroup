@@ -14,27 +14,9 @@ import CryptoKit
 
 @MainActor
 final class AuthViewModel: NSObject, ObservableObject {
-    @Published var signState: SignState = .none
-    @Published var isAuthHasError: Bool = false
-    @Published var userInfo: TripUser?
-    var currentError: Error?
+    var currentUser: User? { get { Auth.auth().currentUser }}
     // Unhashed nonce.
     fileprivate var currentNonce: String?
-    enum SignState {
-        case signIn
-        case signOut
-        case none
-    }
-    
-    func restoreSignIn() {
-        if let user = Auth.auth().currentUser {
-            userInfo = TripUser(id: user.uid,
-                                name: user.displayName ?? "User-\(user.uid)",
-                                email: user.email ?? "NONE",
-                                avatar_url: user.photoURL)
-            signState = .signIn
-        }
-    }
     
     func googleSignIn() async {
         //Firebase client 연결 설정
@@ -54,56 +36,11 @@ final class AuthViewModel: NSObject, ObservableObject {
                                                            accessToken: accessToken.tokenString)
             await signInFirebase(credential: credential)
         } catch {
-            currentError = error
-            isAuthHasError.toggle()
+            print(error.localizedDescription)
         }
     }
     
-    @available(iOS 13, *)
-    func appleSignIn() {
-        let nonce = randomNonceString()
-        currentNonce = nonce
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        request.nonce = sha256(nonce)
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-    
-    func signOut() {
-        do {
-            try Auth.auth().signOut()
-            signState = .signOut
-        } catch {
-            currentError = error
-            isAuthHasError.toggle()
-        }
-    }
-    func deleteAccount() {
-        let user = Auth.auth().currentUser
-        user?.delete(completion: {[weak self] error in
-            if let error {
-                self?.currentError = error
-                self?.isAuthHasError.toggle()
-            } else {
-                self?.signState = .none
-            }
-        })
-        
-    }
-}
-// MARK: Apple 로그인 AuthenticationServices 구현부
-extension AuthViewModel: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
-    
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return ASPresentationAnchor()
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    func appleSignIn(authorization: ASAuthorization) async {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
@@ -121,46 +58,30 @@ extension AuthViewModel: ASAuthorizationControllerDelegate, ASAuthorizationContr
                                                            rawNonce: nonce,
                                                            fullName: appleIDCredential.fullName)
             // Sign in with Firebase.
-            Task { await signInFirebase(credential: credential) }
+            await signInFirebase(credential: credential)
         }
     }
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        // Handle error.
-        currentError = error
-        isAuthHasError.toggle()
-        print("Sign in with Apple errored: \(error)")
-    }
+
     
-    private func randomNonceString(length: Int = 32) -> String {
-        precondition(length > 0)
-        var randomBytes = [UInt8](repeating: 0, count: length)
-        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
-        if errorCode != errSecSuccess {
-            fatalError(
-                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-            )
-        }
-        
-        let charset: [Character] =
-        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-        
-        let nonce = randomBytes.map { byte in
-            // Pick a random character from the set, wrapping around if needed.
-            charset[Int(byte) % charset.count]
-        }
-        
-        return String(nonce)
-    }
     
-    @available(iOS 13, *)
-    private func sha256(_ input: String) -> String {
-        let inputData = Data(input.utf8)
-        let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap {
-            String(format: "%02x", $0)
-        }.joined()
-        
-        return hashString
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    func deleteAccount(){
+        let user = Auth.auth().currentUser
+        user?.delete(completion: { error in
+            if let error {
+                print("DEBUG: DELETE ERROR\(error.localizedDescription)")
+            }
+        })
+    }
+    private func reAuthenticate(credential: AuthCredential) async throws{
+        let user = Auth.auth().currentUser
+        try await user?.reauthenticate(with: credential)
     }
 }
 // MARK: Firebase 로그인 기능 components 구현부
@@ -179,13 +100,7 @@ extension AuthViewModel {
     private func signInFirebase(credential: AuthCredential) async {
         do {
             let result = try await Auth.auth().signIn(with: credential)
-            
-            let firebaseUser = result.user
-            
-            signState = .signIn
-            
-            UserDefaults.standard.set(true, forKey: "isLoggedIn")
-            UserDefaults.standard.set(firebaseUser.uid, forKey: "uid")
+//            let firebaseUser = result.user
         } catch {
             print(error.localizedDescription)
         }

@@ -20,6 +20,8 @@
 		223727952A0B945300DF5ED7 /* car-ignite-animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 223727942A0B945300DF5ED7 /* car-ignite-animation.json */; };
 		223727972A0B95FF00DF5ED7 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727962A0B95FF00DF5ED7 /* LottieView.swift */; };
 		223727992A0BBB9000DF5ED7 /* TripGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223727982A0BBB9000DF5ED7 /* TripGroupView.swift */; };
+		2237279B2A0CC4D500DF5ED7 /* TripGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237279A2A0CC4D500DF5ED7 /* TripGroup.swift */; };
+		2237279D2A0CD20100DF5ED7 /* FirebaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2237279C2A0CD20100DF5ED7 /* FirebaseViewModel.swift */; };
 		2248697A2A0944E10092FDEC /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224869792A0944E10092FDEC /* SignInView.swift */; };
 		2248697C2A0944E50092FDEC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248697B2A0944E50092FDEC /* HomeView.swift */; };
 		2248697E2A0946FA0092FDEC /* StorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2248697D2A0946FA0092FDEC /* StorageViewModel.swift */; };
@@ -56,6 +58,8 @@
 		223727942A0B945300DF5ED7 /* car-ignite-animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "car-ignite-animation.json"; path = "TripGroup/car-ignite-animation.json"; sourceTree = SOURCE_ROOT; };
 		223727962A0B95FF00DF5ED7 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		223727982A0BBB9000DF5ED7 /* TripGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripGroupView.swift; sourceTree = "<group>"; };
+		2237279A2A0CC4D500DF5ED7 /* TripGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripGroup.swift; sourceTree = "<group>"; };
+		2237279C2A0CD20100DF5ED7 /* FirebaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseViewModel.swift; sourceTree = "<group>"; };
 		224869792A0944E10092FDEC /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		2248697B2A0944E50092FDEC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		2248697D2A0946FA0092FDEC /* StorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewModel.swift; sourceTree = "<group>"; };
@@ -250,6 +254,7 @@
 			children = (
 				22DC1C7C2A09288100CAD338 /* AuthViewModel.swift */,
 				2248697D2A0946FA0092FDEC /* StorageViewModel.swift */,
+				2237279C2A0CD20100DF5ED7 /* FirebaseViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -259,6 +264,7 @@
 			children = (
 				22DC1C862A0937AD00CAD338 /* TripUser.swift */,
 				2248697F2A09470C0092FDEC /* TripArticle.swift */,
+				2237279A2A0CC4D500DF5ED7 /* TripGroup.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -353,11 +359,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				2237277C2A0A796500DF5ED7 /* TraillingIconLabelStyle.swift in Sources */,
+				2237279B2A0CC4D500DF5ED7 /* TripGroup.swift in Sources */,
 				2248697A2A0944E10092FDEC /* SignInView.swift in Sources */,
 				2237276B2A09536600DF5ED7 /* Color+.swift in Sources */,
 				2248697C2A0944E50092FDEC /* HomeView.swift in Sources */,
 				224869802A09470C0092FDEC /* TripArticle.swift in Sources */,
 				2248697E2A0946FA0092FDEC /* StorageViewModel.swift in Sources */,
+				2237279D2A0CD20100DF5ED7 /* FirebaseViewModel.swift in Sources */,
 				22DC1C7D2A09288100CAD338 /* AuthViewModel.swift in Sources */,
 				223727972A0B95FF00DF5ED7 /* LottieView.swift in Sources */,
 				22DC1C7A2A09250000CAD338 /* InitialView.swift in Sources */,

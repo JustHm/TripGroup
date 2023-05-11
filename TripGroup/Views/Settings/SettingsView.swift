@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var firebase: FirebaseViewModel
     @State private var isLogout: Bool = false
     @State private var isDeleteAccount: Bool = false
     var body: some View {
@@ -61,14 +61,14 @@ struct SettingsView: View {
         .listStyle(.insetGrouped)
         .alert("LogOut", isPresented: $isLogout) {
             Button("Logout", role: .destructive) {
-                authViewModel.signOut()
+                firebase.usermanage(action: .signOut)
             }
         } message: {
             Text("Are You Sure?")
         }
         .alert("Delete Account", isPresented: $isDeleteAccount) {
             Button("Logout", role: .destructive) {
-                authViewModel.deleteAccount()
+                firebase.usermanage(action: .deleteAccount)
             }
         } message: {
             Text("Are You Sure?")

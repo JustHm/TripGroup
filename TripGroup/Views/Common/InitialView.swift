@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct InitialView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var firebase: FirebaseViewModel
     var body: some View {
         VStack {
-            switch authViewModel.signState {
+            switch firebase.signState {
             case .signIn:
                 ContentView()
             case .signOut, .none:
@@ -19,14 +19,12 @@ struct InitialView: View {
                     .background(Color.tripBackground)
             }
         }
-        .onAppear {
-            authViewModel.restoreSignIn()
-        }
+        .onAppear {}
     }
 }
 
 struct InitialView_Previews: PreviewProvider {
     static var previews: some View {
-        InitialView().environmentObject(AuthViewModel())
+        InitialView().environmentObject(FirebaseViewModel())
     }
 }

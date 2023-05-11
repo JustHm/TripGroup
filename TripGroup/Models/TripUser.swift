@@ -7,9 +7,8 @@
 
 import Foundation
 
-struct TripUser: Identifiable, Codable, Equatable {
-    let id: String             // UID
+struct TripUser: Codable, Equatable {
     let name: String       // username
-    let email: String      // email
     let avatar_url: URL?  // profile image
+    let groups: [String]
 }
