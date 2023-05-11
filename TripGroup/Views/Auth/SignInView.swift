@@ -37,7 +37,7 @@ struct SignInView: View {
                         print("error")
                     }
                 }
-            ).frame(maxWidth: .infinity, maxHeight: 50.0)
+            ).frame(maxWidth: .infinity, maxHeight: 44.0)
             Button {
                 Task {await firebase.signInWithGoogle() }
             } label: {
