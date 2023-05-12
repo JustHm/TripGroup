@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct HomeView: View {
-    @EnvironmentObject var firebase: FirebaseViewModel
     let group = ["Group1", "Group2", "Group3"]
     @State var currentGroup: String = ""
     var body: some View {
@@ -21,7 +20,7 @@ struct HomeView: View {
                 }
                 Spacer()
                 Button {
-                    firebase.addGroup(groupName: "Group1")
+                    print("ADDGroup")
                 } label: {
                     Label("Add Group", systemImage: "plus.circle")
                         .labelStyle(.trailingIcon)
@@ -37,6 +36,5 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
-            .environmentObject(FirebaseViewModel())
     }
 }

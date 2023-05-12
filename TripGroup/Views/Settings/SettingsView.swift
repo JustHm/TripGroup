@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import _AuthenticationServices_SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var firebase: FirebaseViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject private var storage: StorageViewModel
+    
     @State private var isLogout: Bool = false
     @State private var isDeleteAccount: Bool = false
     var body: some View {
@@ -61,17 +64,20 @@ struct SettingsView: View {
         .listStyle(.insetGrouped)
         .alert("LogOut", isPresented: $isLogout) {
             Button("Logout", role: .destructive) {
-                firebase.usermanage(action: .signOut)
+                authViewModel.signOut()
             }
         } message: {
             Text("Are You Sure?")
         }
         .alert("Delete Account", isPresented: $isDeleteAccount) {
-            Button("Logout", role: .destructive) {
-                firebase.usermanage(action: .deleteAccount)
+            Button("Delete", role: .destructive) {
+                Task {
+                    try await authViewModel.firebaseReauthenticate()
+                    storage.deleteUserInfo()
+                }
             }
         } message: {
-            Text("Are You Sure?")
+            Text("You may re-Authenticate for Delete Account")
         }
 
     }

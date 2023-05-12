@@ -8,15 +8,23 @@
 import SwiftUI
 
 struct InitialView: View {
-    @EnvironmentObject var firebase: FirebaseViewModel
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject private var storage: StorageViewModel
     var body: some View {
         VStack {
-            switch firebase.signState {
+            switch authViewModel.signState {
             case .signIn:
                 ContentView()
-            case .signOut, .none:
+                    .onAppear {
+                        Task {
+                            try await storage.addUserInfo()
+                        }
+                    }
+            case .signOut, .delete, .none:
                 SignInView()
                     .background(Color.tripBackground)
+            case .load:
+                LoadView()
             }
         }
         .onAppear {}
@@ -25,6 +33,6 @@ struct InitialView: View {
 
 struct InitialView_Previews: PreviewProvider {
     static var previews: some View {
-        InitialView().environmentObject(FirebaseViewModel())
+        InitialView()
     }
 }

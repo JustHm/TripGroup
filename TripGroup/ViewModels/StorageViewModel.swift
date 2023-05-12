@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
+import FirebaseAuth
 
 final class StorageViewModel: ObservableObject {
     private let firestore = Firestore.firestore()
@@ -22,13 +23,26 @@ final class StorageViewModel: ObservableObject {
         let ref = firestore.collection("Group")
         let documentRef = try ref.addDocument(from: data)
     }
-    func addUserInfo(user: TripUser, uid: String) async throws {
-        let ref = firestore.collection("Users").document(uid)
+    func addUserInfo() async throws {
+        guard let user = Auth.auth().currentUser else { return }
+        let tripUser = TripUser(name: user.displayName ?? "user",
+                                avatar_url: user.photoURL,
+                                groups: [])
+        let ref = firestore.collection("Users").document(user.uid)
         let snapshot = try await ref.getDocument()
         //유저정보가 이미 DB에 있다면 return
         guard !snapshot.exists else { return }
         //유저정보가 DB에 없다면..
-        try ref.setData(from: user)
+        try ref.setData(from: tripUser)
+    }
+    func deleteUserInfo() {
+        guard let user = Auth.auth().currentUser else { return }
+        let ref = firestore.collection("Users").document(user.uid)
+        ref.delete { error in
+            if let error {
+                print("DEBUG DOCUMENT DELETE ERROR: \(error.localizedDescription)")
+            }
+        }
     }
     
 }

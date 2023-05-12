@@ -7,11 +7,9 @@
 
 import SwiftUI
 import Lottie
-import _AuthenticationServices_SwiftUI
-import GoogleSignInSwift
 
 struct SignInView: View {
-    @EnvironmentObject private var firebase: FirebaseViewModel
+    @EnvironmentObject private var authViewModel: AuthViewModel
     var body: some View {
         VStack(spacing: 16.0) {
             Spacer()
@@ -22,53 +20,37 @@ struct SignInView: View {
             
             LottieView(name: "car-ignite-animation", mode: .loop)
 
-            SignInWithAppleButton(
-                onRequest: { request in
-                    request.requestedScopes = [.fullName, .email]
-                },
-                onCompletion: { result in
-                    switch result {
-                    case .success(let authResults):
-                        Task {
-                            await firebase.signInWithApple(authorization: authResults)
-                        }
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                        print("error")
-                    }
-                }
-            ).frame(maxWidth: .infinity, maxHeight: 44.0)
+//            Button(action: {
+//                Task {
+//                    authViewModel.appleSignIn()
+//                }
+//            }, label: {
+//                Label("Sign in with Apple", systemImage: "apple.logo")
+//                    .frame(maxWidth: .infinity)
+//            })
+//            .frame(maxWidth: .infinity, maxHeight: 44.0)
             Button {
-                Task {await firebase.signInWithGoogle() }
+                Task {
+                    await authViewModel.googleSignIn()
+                }
             } label: {
                 Label("Sign in with Google", image: "G_Logo")
                     .frame(maxWidth: .infinity)
             }
+            .frame(maxHeight: 44.0)
             .foregroundColor(Color.black)
             .buttonStyle(.borderedProminent)
             .tint(.white)
-            
-//            Button {
-//                Task { await firebase.signIn(provider:.apple) }
-//            } label: {
-//                Label("Apple Sign In", systemImage: "apple.logo")
-//                    .imageScale(.large)
-//                    .frame(maxWidth: .infinity)
-//            }
-//            .foregroundColor(Color.white)
-//            .buttonStyle(.borderedProminent)
-//            .tint(.black)
             Spacer()
         }
         .padding()
-        
     }
 }
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
         SignInView()
-            .environmentObject(FirebaseViewModel())
+            .environmentObject(AuthViewModel())
             .background(Color.tripBackground)
     }
 }

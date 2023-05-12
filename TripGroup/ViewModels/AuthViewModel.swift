@@ -7,18 +7,21 @@
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
-import GoogleSignInSwift
 //Apple 로그인에 사용
 import AuthenticationServices
 import CryptoKit
 
 @MainActor
 final class AuthViewModel: NSObject, ObservableObject {
+    @Published var signState: SignState = .none
     var currentUser: User? { get { Auth.auth().currentUser }}
     // Unhashed nonce.
     fileprivate var currentNonce: String?
+    private var isDeleteAccount: Bool = false
     
-    func googleSignIn() async {
+    func googleSignIn(isDeleteAccount: Bool = false) async {
+        self.isDeleteAccount = isDeleteAccount
+        signState = .load
         //Firebase client 연결 설정
         guard let clientID = FirebaseApp.app()?.options.clientID else { return}
         let config = GIDConfiguration(clientID: clientID)
@@ -34,54 +37,52 @@ final class AuthViewModel: NSObject, ObservableObject {
             let accessToken = user.accessToken
             let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString,
                                                            accessToken: accessToken.tokenString)
-            await signInFirebase(credential: credential)
+            if isDeleteAccount {
+                try await currentUser?.delete()
+                signState = .none
+            } else {
+                await signInFirebase(credential: credential)
+            }
         } catch {
             print(error.localizedDescription)
         }
     }
-    
-    func appleSignIn(authorization: ASAuthorization) async {
-        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-            guard let nonce = currentNonce else {
-                fatalError("Invalid state: A login callback was received, but no login request was sent.")
-            }
-            guard let appleIDToken = appleIDCredential.identityToken else {
-                print("Unable to fetch identity token")
-                return
-            }
-            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
-                return
-            }
-            // Initialize a Firebase credential, including the user's full name.
-            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
-                                                           rawNonce: nonce,
-                                                           fullName: appleIDCredential.fullName)
-            // Sign in with Firebase.
-            await signInFirebase(credential: credential)
-        }
+    func appleSignIn(isDeleteAccount: Bool = false) {
+        self.isDeleteAccount = isDeleteAccount
+        signState = .load
+        
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+        request.nonce = sha256(nonce)
+        
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+        
     }
-
-    
     
     func signOut() {
         do {
             try Auth.auth().signOut()
+            signState = .signOut
         } catch {
             print(error.localizedDescription)
         }
     }
-    func deleteAccount(){
-        let user = Auth.auth().currentUser
-        user?.delete(completion: { error in
-            if let error {
-                print("DEBUG: DELETE ERROR\(error.localizedDescription)")
-            }
-        })
-    }
-    private func reAuthenticate(credential: AuthCredential) async throws{
-        let user = Auth.auth().currentUser
-        try await user?.reauthenticate(with: credential)
+    
+    func firebaseReauthenticate() async throws {
+        switch currentUser?.providerData[0].providerID {
+        case "apple.com": //OAuthCredential
+            appleSignIn(isDeleteAccount: true)
+        case "google.com": //AuthCredential
+            await googleSignIn(isDeleteAccount: true)
+        default:
+            break
+        }
     }
 }
 // MARK: Firebase 로그인 기능 components 구현부
@@ -99,10 +100,107 @@ extension AuthViewModel {
     
     private func signInFirebase(credential: AuthCredential) async {
         do {
-            let result = try await Auth.auth().signIn(with: credential)
-//            let firebaseUser = result.user
+            let _ = try await Auth.auth().signIn(with: credential)
+            signState = .signIn
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        var randomBytes = [UInt8](repeating: 0, count: length)
+        let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
+        if errorCode != errSecSuccess {
+            fatalError(
+                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+        }
+        
+        let charset: [Character] =
+        Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        
+        let nonce = randomBytes.map { byte in
+            // Pick a random character from the set, wrapping around if needed.
+            charset[Int(byte) % charset.count]
+        }
+        
+        return String(nonce)
+    }
+    
+    @available(iOS 13, *)
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            String(format: "%02x", $0)
+        }.joined()
+        
+        return hashString
+    }
+}
+
+//MARK: Delegate
+extension AuthViewModel: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        ASPresentationAnchor()
+    }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            if isDeleteAccount {
+                authorizationControllerDeleteAccount(appleIDCredential: appleIDCredential)
+            } else {
+                authorizationControllerSignIn(appleIDCredential: appleIDCredential)
+            }
+        }
+    }
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        print("DEBUG: \(error.localizedDescription)")
+    }
+    private func authorizationControllerSignIn(appleIDCredential: ASAuthorizationAppleIDCredential) {
+        //Login Part
+        guard let nonce = currentNonce else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+        }
+        guard let appleIDToken = appleIDCredential.identityToken else {
+            print("Unable to fetch identity token")
+            return
+        }
+        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+            return
+        }
+        // Initialize a Firebase credential, including the user's full name.
+        let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
+                                                       rawNonce: nonce,
+                                                       fullName: appleIDCredential.fullName)
+        
+        // Sign in with Firebase.
+        Task {
+           await signInFirebase(credential: credential)
+        }
+    }
+    private func authorizationControllerDeleteAccount(appleIDCredential: ASAuthorizationAppleIDCredential) {
+        //Delete Account Part
+        guard let appleAuthCode = appleIDCredential.authorizationCode else {
+            print("Unable to fetch authorization code")
+            return
+        }
+        
+        guard let authCodeString = String(data: appleAuthCode, encoding: .utf8) else {
+            print("Unable to serialize auth code string from data: \(appleAuthCode.debugDescription)")
+            return
+        }
+        
+        Task {
+            do {
+                try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
+                try await currentUser?.delete()
+                signState = .delete
+            } catch {
+                print(error.localizedDescription)
+                signState = .none
+            }
         }
     }
 }
@@ -110,4 +208,12 @@ extension AuthViewModel {
 enum AuthenticationError: Error {
     case tokenError(message: String)
     case viewError
+}
+
+enum SignState {
+    case signIn
+    case signOut
+    case load
+    case delete
+    case none
 }

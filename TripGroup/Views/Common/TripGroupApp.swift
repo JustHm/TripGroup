@@ -14,7 +14,8 @@ struct TripGroupApp: App {
     var body: some Scene {
         WindowGroup {
             InitialView()
-                .environmentObject(FirebaseViewModel())
+                .environmentObject(AuthViewModel())
+                .environmentObject(StorageViewModel())
         }
     }
 }
