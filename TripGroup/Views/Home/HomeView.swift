@@ -8,33 +8,29 @@
 import SwiftUI
 
 struct HomeView: View {
-    let group = ["Group1", "Group2", "Group3"]
-    @State var currentGroup: String = ""
+    @EnvironmentObject var storage: StorageViewModel
+    @State var currentGroup: String?
+    @Binding var isAddGroupTapped: Bool
     var body: some View {
         VStack {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("Title")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                }
-                Spacer()
-                Button {
-                    print("ADDGroup")
-                } label: {
-                    Label("Add Group", systemImage: "plus.circle")
-                        .labelStyle(.trailingIcon)
-                        .tint(.tripBackground)
-                }
-            }.padding(.all, 16.0)
-            Spacer()
-            TripGroupView()
+            HomeHeaderView(groupTitle: nil,
+                           groups: storage.userInfo?.groups ?? ["a", "b"],
+                           isAddGroupTapped: $isAddGroupTapped
+            )
+            
+            if let userInfo = storage.userInfo, userInfo.groups.isEmpty {
+                TripGroupView()
+            } else {
+                TripGroupView()
+            }
+            
         }
     }
 }
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        HomeView(isAddGroupTapped: .constant(false))
+            .environmentObject(StorageViewModel())
     }
 }

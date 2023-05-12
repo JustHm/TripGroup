@@ -8,13 +8,23 @@
 import SwiftUI
 
 struct TripCalendarView: View {
+    @EnvironmentObject var storage: StorageViewModel
+    @Binding var isAddGroupTapped: Bool
+    @State private var date: Date = Date()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            HomeHeaderView(groupTitle: nil,
+                           groups: storage.userInfo?.groups ?? ["a", "b"],
+                           isAddGroupTapped: .constant(false)
+                           )
+            
+        }
     }
 }
 
 struct TripCalendarView_Previews: PreviewProvider {
     static var previews: some View {
-        TripCalendarView()
+        TripCalendarView(isAddGroupTapped: .constant(false))
+            .environmentObject(StorageViewModel())
     }
 }

@@ -9,11 +9,39 @@ import SwiftUI
 
 struct TripGroupView: View {
     var body: some View {
-        List {
-            Text("Hello")
-            Text("This is")
-            Text("HOME View")
+        ScrollView(.vertical, showsIndicators: true) {
+            LazyVStack(pinnedViews: .sectionHeaders) {
+                Section("Header1") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header2") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header3") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header4") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header5") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header6") {
+                    Text("HI")
+                    Text("HI")
+                }
+                Section("Header7") {
+                    Text("HI")
+                    Text("HI")
+                }
+            }
         }
+        .font(.largeTitle)
     }
 }
 

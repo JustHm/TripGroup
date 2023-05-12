@@ -19,6 +19,12 @@ final class AuthViewModel: NSObject, ObservableObject {
     fileprivate var currentNonce: String?
     private var isDeleteAccount: Bool = false
     
+    override init() {
+        super.init()
+        guard let _ = currentUser else { return }
+        signState = .signIn
+    }
+    
     func googleSignIn(isDeleteAccount: Bool = false) async {
         self.isDeleteAccount = isDeleteAccount
         signState = .load
@@ -45,6 +51,7 @@ final class AuthViewModel: NSObject, ObservableObject {
             }
         } catch {
             print(error.localizedDescription)
+            signState = .none
         }
     }
     func appleSignIn(isDeleteAccount: Bool = false) {

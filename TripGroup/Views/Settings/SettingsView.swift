@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import _AuthenticationServices_SwiftUI
+import FirebaseAuth
 
 struct SettingsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -23,7 +23,7 @@ struct SettingsView: View {
                         .frame(width: 64.0, height: 64.0)
                         .clipShape(Circle())
                         
-                    Text("UserName")
+                    Text(TripUser.userInfo?.name ?? "user")
                         .foregroundColor(.primary)
                     
                     Spacer()
@@ -72,8 +72,9 @@ struct SettingsView: View {
         .alert("Delete Account", isPresented: $isDeleteAccount) {
             Button("Delete", role: .destructive) {
                 Task {
+                    guard let user = authViewModel.currentUser else { return }
                     try await authViewModel.firebaseReauthenticate()
-                    storage.deleteUserInfo()
+                    storage.deleteUserInfo(uid: user.uid)
                 }
             }
         } message: {

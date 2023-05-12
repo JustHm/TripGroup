@@ -18,6 +18,7 @@ struct InitialView: View {
                     .onAppear {
                         Task {
                             try await storage.addUserInfo()
+                            
                         }
                     }
             case .signOut, .delete, .none:

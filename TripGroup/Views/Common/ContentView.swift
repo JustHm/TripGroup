@@ -15,19 +15,20 @@ struct ContentView: View {
         TabList(title: "Settings", icon: "gear")
         ]
     @State var selectedIndex = 0
+    @State var isAddGroupTapped = false
     var body: some View {
         NavigationView {
             TabView {
-                HomeView()
+                HomeView(isAddGroupTapped: $isAddGroupTapped)
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
                     .tag(0)
-                TripCalendarView()
+                TripCalendarView(isAddGroupTapped: $isAddGroupTapped)
                     .tabItem {
                         Label("Calendar", systemImage: "calendar")
                     }.tag(1)
-                TripMapView()
+                TripMapView(isAddGroupTapped: $isAddGroupTapped)
                     .tabItem {
                         Label("Map", systemImage: "map")
                     }.tag(2)
@@ -35,6 +36,9 @@ struct ContentView: View {
                     .tabItem {
                         Label("Settings", systemImage: "gear")
                     }.tag(3)
+            }
+            .sheet(isPresented: $isAddGroupTapped) {
+                Text("HI")
             }
             .tint(.white)
             .onAppear {
